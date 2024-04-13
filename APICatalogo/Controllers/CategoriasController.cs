@@ -20,12 +20,12 @@ namespace APICatalogo.Controllers
         }
 
         [HttpGet("Produtos")]
-        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos(int id)
+        public ActionResult<IEnumerable<Categoria>> GetCategoriasProdutos()
         {
-            var categoria = _context.categorias.Include(p=>p.produtos).ToList();
-
             
-            return categoria;
+            
+           //return _context.Categorias.Include(p=> p.Produtos).ToList();
+            return _context.categorias.Include(p => p.produtos).Where(c => c.CategoriaId <= 5).ToList();
         }
 
         [HttpGet]
@@ -35,7 +35,7 @@ namespace APICatalogo.Controllers
                        
         }
 
-        [HttpGet("{id:int}", Name ="ObterProduto")]
+        [HttpGet("{id:int}", Name = "ObterCategoria")]
         public ActionResult<Categoria> Get(int id)
         {
             var categoria = _context.categorias.FirstOrDefault(p => p.CategoriaId == id);
@@ -59,7 +59,7 @@ namespace APICatalogo.Controllers
             _context.categorias.Add(categoria);
             _context.SaveChanges();
 
-            return new CreatedAtRouteResult("ObterProduto",
+            return new CreatedAtRouteResult("ObterCategoria",
                 new { id = categoria.CategoriaId }, categoria);
         }
 
